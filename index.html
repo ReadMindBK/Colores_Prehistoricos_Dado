@@ -1,348 +1,942 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>Dado Virtual</title>
+
 
     <style>
 
-    /* ================================================= */
-    /* CONFIGURACIÓN DEL DADO                            */
-    /* ================================================= */
+        /* ================================================= */
+        /* CONFIGURACIÓN GENERAL                             */
+        /* ================================================= */
 
-    :root {
+        :root {
 
-        /* TAMAÑO DEL DADO */
-        --dado-tamano: 210px;
 
-        /* TAMAÑO DE LOS PUNTOS */
-        --punto-tamano: 40px;
+            /* ================================================= */
+            /* TAMAÑO DEL DADO                                  */
+            /* ================================================= */
 
-        /* COLOR NORMAL DEL DADO */
-        --dado-color: #ffffff;
+            --dado-tamano: 210px;
 
-        /* COLOR DEL DADO AL SER PRESIONADO */
-        --dado-color-presionado: #ffd92f;
+            --punto-tamano: 40px;
 
-        /* COLOR DE LOS PUNTOS */
-        --punto-color: #229922;
 
-        /* REDONDEO DEL DADO */
-        --dado-radio: 22px;
-    }
+            /* ================================================= */
+            /* COLORES DEL DADO                                  */
+            /* ================================================= */
 
+            --dado-color: #ffffff;
 
-    /* ========================= */
-    /* PÁGINA */
-    /* ========================= */
+            --dado-color-presionado: #ffd92f;
 
-    body{
-        margin:0;
-        background:#ffffff;
-        font-family:Arial,Helvetica,sans-serif;
-    }
+            --punto-color: #229922;
 
+            --dado-radio: 22px;
 
-    /* ========================= */
-    /* TARJETA */
-    /* ========================= */
 
-    .card{
-        position:relative;
-        width:calc(100% - 32px);
-        max-width:420px;
-        margin:20px auto;
 
-        border-radius:20px;
+            /* ================================================= */
+            /* BOTÓN "CÓMO JUGAR"                                */
+            /* ================================================= */
 
-        /* Permite que la sombra del dado no se corte */
-        overflow:visible;
-    }
+            /* ANCHO */
 
-    .cover{
-        display:block;
-        width:100%;
-        border-radius:20px;
-    }
+            --boton-ancho: 220px;
 
 
-    /* ================================================= */
-    /* DADO                                             */
-    /* ================================================= */
+            /* ALTO */
 
-    .dado{
+            --boton-alto: 45px;
 
-        position:absolute;
 
-        /* POSICIÓN DEL DADO SOBRE LA PORTADA */
-        top:72%;
-        left:50%;
+            /* TAMAÑO DEL TEXTO */
 
-        transform:translate(-50%,-50%);
+            --boton-texto: 20px;
 
-        width:var(--dado-tamano);
-        height:var(--dado-tamano);
 
-        background:var(--dado-color);
+            /* COLOR DEL BOTÓN */
 
-        border-radius:var(--dado-radio);
+            --boton-color: #229922;
 
-        z-index:10;
 
-        cursor:pointer;
+            /* COLOR DEL TEXTO */
 
-        display:grid;
+            --boton-texto-color: #ffffff;
 
-        grid-template-columns:1fr 1fr 1fr;
-        grid-template-rows:1fr 1fr 1fr;
 
-        padding:18px;
+            /* COLOR AL PRESIONAR */
 
-        box-sizing:border-box;
+            --boton-color-presionado: #176b17;
 
-        /* SOMBRA */
 
-        box-shadow:
-            0 10px 18px rgba(0,0,0,.28),
-            0 3px 5px rgba(0,0,0,.15),
-            inset 0 -5px 0 rgba(0,0,0,.08);
+            /* REDONDEO */
 
-        transition:
-            background-color .15s ease,
-            box-shadow .15s ease;
-    }
+            --boton-radio: 14px;
 
 
-    /* ================================================= */
-    /* DADO PRESIONADO                                  */
-    /* ================================================= */
 
-    .dado.presionado{
+            /* ================================================= */
+            /* BARRA DE PROGRESO                                 */
+            /* ================================================= */
 
-        background:var(--dado-color-presionado);
+            /* ANCHO DE LA BARRA */
 
-        box-shadow:
-            0 10px 18px rgba(0,0,0,.30),
-            0 4px 7px rgba(0,0,0,.18),
-            inset 0 -5px 0 rgba(0,0,0,.08);
-    }
+            --barra-ancho: 280px;
 
 
-    /* ================================================= */
-    /* EFECTO AL PRESIONAR                              */
-    /* ================================================= */
+            /* GROSOR DE LA BARRA */
 
-    .dado:active{
+            --barra-alto: 6px;
 
-        transform:
-            translate(-50%,-50%)
-            scale(.94);
 
-        box-shadow:
-            0 5px 10px rgba(0,0,0,.25),
-            inset 0 -3px 0 rgba(0,0,0,.08);
-    }
+            /* COLOR DEL FONDO */
 
+            --barra-fondo: #dddddd;
 
-    /* ========================= */
-    /* PUNTOS */
-    /* ========================= */
 
-    .punto{
+            /* COLOR DEL PROGRESO */
 
-        width:var(--punto-tamano);
-        height:var(--punto-tamano);
+            --barra-color: #229922;
 
-        background:var(--punto-color);
 
-        border-radius:50%;
+            /* COLOR DEL PUNTO DESLIZABLE */
 
-        align-self:center;
-        justify-self:center;
-    }
+            --barra-punto-color: #229922;
 
 
-    /* ================================================= */
-    /* POSICIONES DE LOS PUNTOS                         */
-    /* ================================================= */
+            /* TAMAÑO DEL PUNTO */
 
-    .p1{
-        grid-column:1;
-        grid-row:1;
-    }
+            --barra-punto-tamano: 14px;
 
-    .p2{
-        grid-column:2;
-        grid-row:1;
-    }
 
-    .p3{
-        grid-column:3;
-        grid-row:1;
-    }
+            /* REDONDEO */
 
-    .p4{
-        grid-column:1;
-        grid-row:2;
-    }
+            --barra-radio: 10px;
 
-    .p5{
-        grid-column:2;
-        grid-row:2;
-    }
 
-    .p6{
-        grid-column:3;
-        grid-row:2;
-    }
 
-    .p7{
-        grid-column:1;
-        grid-row:3;
-    }
+            /* ================================================= */
+            /* POSICIÓN DE LA BARRA Y LOS TIEMPOS                 */
+            /* ================================================= */
 
-    .p8{
-        grid-column:2;
-        grid-row:3;
-    }
+            /*
+               ESTE VALOR MUEVE TODO EL BLOQUE
+               HACIA ARRIBA O HACIA ABAJO.
 
-    .p9{
-        grid-column:3;
-        grid-row:3;
-    }
+               EJEMPLOS:
 
+               0px   = posición normal
+              -20px  = 20px hacia arriba
+               30px  = 30px hacia abajo
+            */
 
-    /* ================================================= */
-    /* ANIMACIÓN DEL DADO                               */
-    /* ================================================= */
+            --posicion-barra: 6px;
 
-    .tirando{
 
-        animation:
-            tirarDado .45s ease;
-    }
 
-    @keyframes tirarDado{
+            /* ================================================= */
+            /* COLOR DE LOS NÚMEROS DE TIEMPO                     */
+            /* ================================================= */
 
-        0%{
-            transform:
-                translate(-50%,-50%)
-                rotate(0deg)
-                scale(1);
+            --color-tiempo: #666666;
 
-            box-shadow:
-                0 10px 18px rgba(0,0,0,.28),
-                0 3px 5px rgba(0,0,0,.15),
-                inset 0 -5px 0 rgba(0,0,0,.08);
+
+            /* TAMAÑO DE LOS NÚMEROS */
+
+            --tamano-tiempo: 13px;
+
         }
 
-        30%{
-            transform:
-                translate(-50%,-50%)
-                rotate(15deg)
-                scale(1.08);
 
-            box-shadow:
-                0 16px 25px rgba(0,0,0,.30),
-                0 5px 8px rgba(0,0,0,.18),
-                inset 0 -5px 0 rgba(0,0,0,.08);
+
+        /* ================================================= */
+        /* PÁGINA                                             */
+        /* ================================================= */
+
+        body {
+
+            margin: 0;
+
+            background: #ffffff;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
         }
 
-        60%{
-            transform:
-                translate(-50%,-50%)
-                rotate(-15deg)
-                scale(1.08);
 
-            box-shadow:
-                0 16px 25px rgba(0,0,0,.30),
-                0 5px 8px rgba(0,0,0,.18),
-                inset 0 -5px 0 rgba(0,0,0,.08);
+
+        /* ================================================= */
+        /* TARJETA                                            */
+        /* ================================================= */
+
+        .card {
+
+            position: relative;
+
+            width:
+                calc(100% - 32px);
+
+            max-width: 420px;
+
+            margin:
+                20px auto;
+
+            border-radius: 20px;
+
+            overflow: visible;
+
         }
 
-        100%{
+
+
+        /* ================================================= */
+        /* PORTADA                                            */
+        /* ================================================= */
+
+        .cover {
+
+            display: block;
+
+            width: 100%;
+
+            border-radius: 20px;
+
+            transition:
+                opacity .20s ease;
+
+        }
+
+
+
+        /* ================================================= */
+        /* BOTÓN CÓMO JUGAR                                   */
+        /* ================================================= */
+
+        .contenedor-tutorial {
+
+            width: 100%;
+
+            text-align: center;
+
+            margin-top: 0px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+
+        .boton-tutorial {
+
+            width:
+                var(--boton-ancho);
+
+            height:
+                var(--boton-alto);
+
+            background:
+                var(--boton-color);
+
+            color:
+                var(--boton-texto-color);
+
+            font-size:
+                var(--boton-texto);
+
+            font-weight: bold;
+
+            border: none;
+
+            border-radius:
+                var(--boton-radio);
+
+            cursor: pointer;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            box-sizing: border-box;
+
+            transition:
+
+                background-color .15s ease,
+
+                transform .15s ease;
+
+        }
+
+
+
+        .boton-tutorial:hover {
+
             transform:
-                translate(-50%,-50%)
-                rotate(0deg)
-                scale(1);
+                scale(1.04);
+
+        }
+
+
+
+        .boton-tutorial:active {
+
+            background:
+                var(--boton-color-presionado);
+
+            transform:
+                scale(.96);
+
+        }
+
+
+
+        /* ================================================= */
+        /* CONTENEDOR DE LA BARRA                              */
+        /* ================================================= */
+
+        .contenedor-progreso {
+
+            width: 100%;
+
+            text-align: center;
+
+            margin-top: 10px;
+
+            margin-bottom: 5px;
+
+            transform:
+                translateY(var(--posicion-barra));
+
+        }
+
+
+
+        /* ================================================= */
+        /* BARRA DESLIZABLE                                   */
+        /* ================================================= */
+
+        .barra-progreso {
+
+            position: relative;
+
+            width:
+                var(--barra-ancho);
+
+            height:
+                var(--barra-alto);
+
+            background:
+                var(--barra-fondo);
+
+            border-radius:
+                var(--barra-radio);
+
+            display: inline-block;
+
+            cursor: pointer;
+
+            touch-action: none;
+
+        }
+
+
+
+        /* ================================================= */
+        /* PARTE AVANZADA                                     */
+        /* ================================================= */
+
+        .progreso {
+
+            position: absolute;
+
+            left: 0;
+
+            top: 0;
+
+            width: 0%;
+
+            height: 100%;
+
+            background:
+                var(--barra-color);
+
+            border-radius:
+                var(--barra-radio);
+
+            pointer-events: none;
+
+        }
+
+
+
+        /* ================================================= */
+        /* PUNTO DESLIZABLE                                   */
+        /* ================================================= */
+
+        .punto-progreso {
+
+            position: absolute;
+
+            top: 50%;
+
+            left: 0%;
+
+            width:
+                var(--barra-punto-tamano);
+
+            height:
+                var(--barra-punto-tamano);
+
+            background:
+                var(--barra-punto-color);
+
+            border-radius: 50%;
+
+            transform:
+                translate(-50%, -50%);
+
+            cursor: grab;
 
             box-shadow:
-                0 10px 18px rgba(0,0,0,.28),
-                0 3px 5px rgba(0,0,0,.15),
-                inset 0 -5px 0 rgba(0,0,0,.08);
+                0 2px 5px rgba(0,0,0,.25);
+
+            transition:
+                transform .1s ease;
+
         }
-    }
 
 
-    /* ================================================= */
-    /* BOTÓN SITIO WEB                                  */
-    /* ================================================= */
 
-    .contenedor-enlace-web {
+        .punto-progreso:hover {
 
-        text-align:center;
+            transform:
+                translate(-50%, -50%)
+                scale(1.15);
 
-        margin-top:150px;
+        }
 
-        margin-bottom:20px;
 
-        width:100%;
-    }
 
-    .enlace-imagen {
+        .punto-progreso:active {
 
-        display:inline-block;
+            cursor: grabbing;
 
-        text-decoration:none;
-    }
+            transform:
+                translate(-50%, -50%)
+                scale(1.2);
 
-    .imagen-boton {
+        }
 
-        max-width:260px;
 
-        width:100%;
 
-        height:auto;
+        /* ================================================= */
+        /* TIEMPO DEL AUDIO                                   */
+        /* ================================================= */
 
-        display:block;
+        .tiempo-tutorial {
 
-        margin:0 auto;
+            text-align: center;
 
-        transition:transform .2s ease;
-    }
+            font-size:
+                var(--tamano-tiempo);
 
-    .imagen-boton:hover {
+            color:
+                var(--color-tiempo);
 
-        transform:scale(1.05);
+            margin-top: 8px;
 
-        cursor:pointer;
-    }
+            margin-bottom: 5px;
+
+            transform:
+                translateY(var(--posicion-barra));
+
+        }
+
+
+
+        /* ================================================= */
+        /* DADO                                              */
+        /* ================================================= */
+
+        .dado {
+
+            position: relative;
+
+            margin:
+                50px auto 0 auto;
+
+            width:
+                var(--dado-tamano);
+
+            height:
+                var(--dado-tamano);
+
+            background:
+                var(--dado-color);
+
+            border-radius:
+                var(--dado-radio);
+
+            z-index: 10;
+
+            cursor: pointer;       
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr 1fr;
+
+            grid-template-rows:
+                1fr 1fr 1fr;
+
+            padding: 18px;
+
+            box-sizing: border-box;
+
+            box-shadow:
+
+                0 10px 18px
+                rgba(0,0,0,.28),
+
+                0 3px 5px
+                rgba(0,0,0,.15),
+
+                inset 0 -5px 0
+                rgba(0,0,0,.08);
+
+            transition:
+
+                background-color .15s ease,
+
+                box-shadow .15s ease;
+
+        }
+
+
+
+        /* ================================================= */
+        /* DADO PRESIONADO                                    */
+        /* ================================================= */
+
+        .dado.presionado {
+
+            background:
+                var(--dado-color-presionado);
+
+            box-shadow:
+
+                0 10px 18px
+                rgba(0,0,0,.30),
+
+                0 4px 7px
+                rgba(0,0,0,.18),
+
+                inset 0 -5px 0
+                rgba(0,0,0,.08);
+
+        }
+
+
+
+        /* ================================================= */
+        /* EFECTO AL PRESIONAR                                */
+        /* ================================================= */
+
+        .dado:active {
+
+            transform:
+                scale(.94);
+
+            box-shadow:
+
+                0 5px 10px
+                rgba(0,0,0,.25),
+
+                inset 0 -3px 0
+                rgba(0,0,0,.08);
+
+        }
+
+
+
+        /* ================================================= */
+        /* PUNTOS DEL DADO                                    */
+        /* ================================================= */
+
+        .punto {
+
+            width:
+                var(--punto-tamano);
+
+            height:
+                var(--punto-tamano);
+
+            background:
+                var(--punto-color);
+
+            border-radius: 50%;
+
+            align-self: center;
+
+            justify-self: center;
+
+        }
+
+
+
+        /* ================================================= */
+        /* POSICIONES                                         */
+        /* ================================================= */
+
+        .p1 {
+
+            grid-column: 1;
+
+            grid-row: 1;
+
+        }
+
+
+        .p2 {
+
+            grid-column: 2;
+
+            grid-row: 1;
+
+        }
+
+
+        .p3 {
+
+            grid-column: 3;
+
+            grid-row: 1;
+
+        }
+
+
+        .p4 {
+
+            grid-column: 1;
+
+            grid-row: 2;
+
+        }
+
+
+        .p5 {
+
+            grid-column: 2;
+
+            grid-row: 2;
+
+        }
+
+
+        .p6 {
+
+            grid-column: 3;
+
+            grid-row: 2;
+
+        }
+
+
+        .p7 {
+
+            grid-column: 1;
+
+            grid-row: 3;
+
+        }
+
+
+        .p8 {
+
+            grid-column: 2;
+
+            grid-row: 3;
+
+        }
+
+
+        .p9 {
+
+            grid-column: 3;
+
+            grid-row: 3;
+
+        }
+
+
+
+        /* ================================================= */
+        /* ANIMACIÓN DEL DADO                                 */
+        /* ================================================= */
+
+        .tirando {
+
+            animation:
+                tirarDado .45s ease;
+
+        }
+
+
+
+        @keyframes tirarDado {
+
+            0% {
+
+                transform:
+                    rotate(0deg)
+                    scale(1);
+
+                box-shadow:
+
+                    0 10px 18px
+                    rgba(0,0,0,.28),
+
+                    0 3px 5px
+                    rgba(0,0,0,.15),
+
+                    inset 0 -5px 0
+                    rgba(0,0,0,.08);
+
+            }
+
+
+            30% {
+
+                transform:
+                    rotate(15deg)
+                    scale(1.08);
+
+                box-shadow:
+
+                    0 16px 25px
+                    rgba(0,0,0,.30),
+
+                    0 5px 8px
+                    rgba(0,0,0,.18),
+
+                    inset 0 -5px 0
+                    rgba(0,0,0,.08);
+
+            }
+
+
+            60% {
+
+                transform:
+                    rotate(-15deg)
+                    scale(1.08);
+
+                box-shadow:
+
+                    0 16px 25px
+                    rgba(0,0,0,.30),
+
+                    0 5px 8px
+                    rgba(0,0,0,.18),
+
+                    inset 0 -5px 0
+                    rgba(0,0,0,.08);
+
+            }
+
+
+            100% {
+
+                transform:
+                    rotate(0deg)
+                    scale(1);
+
+                box-shadow:
+
+                    0 10px 18px
+                    rgba(0,0,0,.28),
+
+                    0 3px 5px
+                    rgba(0,0,0,.15),
+
+                    inset 0 -5px 0
+                    rgba(0,0,0,.08);
+
+            }
+
+        }
+
+
+
+        /* ================================================= */
+        /* BOTÓN SITIO WEB                                    */
+        /* ================================================= */
+
+        .contenedor-enlace-web {
+
+            text-align: center;
+
+            margin-top: 80px;
+
+            margin-bottom: 20px;
+
+            width: 100%;
+
+        }
+
+
+
+        .enlace-imagen {
+
+            display: inline-block;
+
+            text-decoration: none;
+
+        }
+
+
+
+        .imagen-boton {
+
+            max-width: 260px;
+
+            width: 100%;
+
+            height: auto;
+
+            display: block;
+
+            margin: 0 auto;
+
+            transition:
+                transform .2s ease;
+
+        }
+
+
+
+        .imagen-boton:hover {
+
+            transform:
+                scale(1.05);
+
+            cursor: pointer;
+
+        }
 
     </style>
+
 </head>
+
 
 
 <body>
 
 
     <!-- ================================================= -->
-    <!-- TARJETA                                          -->
+    <!-- TARJETA                                           -->
     <!-- ================================================= -->
 
     <div class="card">
 
-        <!-- Imagen de fondo -->
+
+        <!-- ================================================= -->
+        <!-- PORTADA                                            -->
+        <!-- ================================================= -->
 
         <img
+            id="portada"
             class="cover"
             src="portada.png"
             alt="Portada"
         >
 
 
+
         <!-- ================================================= -->
-        <!-- DADO                                              -->
+        <!-- BOTÓN CÓMO JUGAR                                   -->
+        <!-- ================================================= -->
+
+        <div class="contenedor-tutorial">
+
+            <button
+                id="botonTutorial"
+                class="boton-tutorial"
+                onclick="controlarTutorial()"
+            >
+                ¿CÓMO JUGAR?
+            </button>
+
+        </div>
+
+
+
+        <!-- ================================================= -->
+        <!-- BARRA DE PROGRESO                                  -->
+        <!--                                                     -->
+        <!-- SIEMPRE VISIBLE                                    -->
+        <!-- ================================================= -->
+
+        <div
+            class="contenedor-progreso"
+            id="contenedorProgreso"
+        >
+
+            <div
+                class="barra-progreso"
+                id="barraProgreso"
+            >
+
+                <!-- PARTE AVANZADA -->
+
+                <div
+                    class="progreso"
+                    id="progreso"
+                ></div>
+
+
+                <!-- PUNTO DESLIZABLE -->
+
+                <div
+                    class="punto-progreso"
+                    id="puntoProgreso"
+                ></div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ================================================= -->
+        <!-- TIEMPO                                             -->
+        <!-- ================================================= -->
+
+        <div
+            id="tiempoTutorial"
+            class="tiempo-tutorial"
+        >
+            0:00 / 0:00
+        </div>
+
+
+
+        <!-- ================================================= -->
+        <!-- DADO                                               -->
         <!-- ================================================= -->
 
         <div
@@ -351,27 +945,60 @@
             onclick="tirarDado()"
         >
 
-            <!-- Los 9 espacios posibles -->
+            <div
+                id="p1"
+                class="punto p1"
+            ></div>
 
-            <div id="p1" class="punto p1"></div>
-            <div id="p2" class="punto p2"></div>
-            <div id="p3" class="punto p3"></div>
+            <div
+                id="p2"
+                class="punto p2"
+            ></div>
 
-            <div id="p4" class="punto p4"></div>
-            <div id="p5" class="punto p5"></div>
-            <div id="p6" class="punto p6"></div>
+            <div
+                id="p3"
+                class="punto p3"
+            ></div>
 
-            <div id="p7" class="punto p7"></div>
-            <div id="p8" class="punto p8"></div>
-            <div id="p9" class="punto p9"></div>
+            <div
+                id="p4"
+                class="punto p4"
+            ></div>
+
+            <div
+                id="p5"
+                class="punto p5"
+            ></div>
+
+            <div
+                id="p6"
+                class="punto p6"
+            ></div>
+
+            <div
+                id="p7"
+                class="punto p7"
+            ></div>
+
+            <div
+                id="p8"
+                class="punto p8"
+            ></div>
+
+            <div
+                id="p9"
+                class="punto p9"
+            ></div>
 
         </div>
+
 
     </div>
 
 
+
     <!-- ================================================= -->
-    <!-- BOTÓN SITIO WEB                                  -->
+    <!-- BOTÓN SITIO WEB                                    -->
     <!-- ================================================= -->
 
     <div class="contenedor-enlace-web">
@@ -395,145 +1022,855 @@
 
 
     <!-- ================================================= -->
-    <!-- JAVASCRIPT DEL DADO                              -->
+    <!-- JAVASCRIPT                                         -->
     <!-- ================================================= -->
 
     <script>
 
 
         /* ================================================= */
-        /* SONIDO DEL DADO                                  */
+        /* SONIDO DEL DADO                                    */
         /* ================================================= */
 
-        const sonidoDado = new Audio("dado.mp3");
+        const sonidoDado =
+            new Audio("dado.mp3");
+
 
 
         /* ================================================= */
-        /* FUNCIÓN TIRAR DADO                               */
+        /* AUDIO DEL TUTORIAL                                 */
         /* ================================================= */
 
-        function tirarDado(){
-
-            const dado =
-                document.getElementById("dado");
+        const audioTutorial =
+            new Audio("tutorial.mp3");
 
 
-            /* ================================================= */
-            /* REPRODUCIR SONIDO                                */
-            /* ================================================= */
 
-            sonidoDado.currentTime = 0;
+        /* ================================================= */
+        /* CONFIGURACIÓN DE LAS IMÁGENES                       */
+        /* ================================================= */
 
-            sonidoDado.play();
+        /*
+           ACÁ DEFINÍS EN QUÉ SEGUNDO CAMBIA CADA IMAGEN.
 
+           PODÉS USAR DECIMALES.
 
-            /* ================================================= */
-            /* EFECTO AMARILLO                                  */
-            /* ================================================= */
+           EJEMPLO:
 
-            dado.classList.add("presionado");
-
-
-            /*
-            El dado vuelve a blanco
-            después de 1 segundo.
-            */
-
-            setTimeout(function(){
-
-                dado.classList.remove("presionado");
-
-            }, 50);
+           8.5 = 8 segundos y medio
+        */
 
 
-            /* ================================================= */
-            /* GENERAR NÚMERO ALEATORIO                         */
-            /* ================================================= */
+        const pasosTutorial = [
 
-            const numero =
-                Math.floor(Math.random() * 6) + 1;
+            {
+                segundo: 15,
+                imagen: "tutorial-1.png"
+            },
 
+            {
+                segundo: 30,
+                imagen: "tutorial-2.png"
+            },
 
-            /* ================================================= */
-            /* REINICIAR ANIMACIÓN                              */
-            /* ================================================= */
+            {
+                segundo: 45,
+                imagen: "tutorial-3.png"
+            },
 
-            dado.classList.remove("tirando");
+            {
+                segundo: 50,
+                imagen: "tutorial-4.png"
+            },
 
-            void dado.offsetWidth;
+            {
+                segundo: 60,
+                imagen: "tutorial-5.png"
+            }
 
-            dado.classList.add("tirando");
-
-
-            /* ================================================= */
-            /* OCULTAR TODOS LOS PUNTOS                         */
-            /* ================================================= */
-
-            document
-                .querySelectorAll(".punto")
-                .forEach(punto => {
-
-                    punto.style.display = "none";
-
-                });
+        ];
 
 
-            /* ================================================= */
-            /* CONFIGURACIÓN DE CADA CARA                      */
-            /* ================================================= */
 
-            const caras = {
+        /* ================================================= */
+        /* ELEMENTOS HTML                                     */
+        /* ================================================= */
 
-                1: ["p5"],
-
-                2: ["p1","p9"],
-
-                3: ["p1","p5","p9"],
-
-                4: ["p1","p3","p7","p9"],
-
-                5: ["p1","p3","p5","p7","p9"],
-
-                6: ["p1","p3","p4","p6","p7","p9"]
-
-            };
+        const portada =
+            document.getElementById("portada");
 
 
-            /* ================================================= */
-            /* MOSTRAR LOS PUNTOS                               */
-            /* ================================================= */
+        const botonTutorial =
+            document.getElementById("botonTutorial");
 
-            caras[numero].forEach(id => {
 
-                document
-                    .getElementById(id)
-                    .style.display = "block";
+        const progreso =
+            document.getElementById("progreso");
 
-            });
+
+        const puntoProgreso =
+            document.getElementById("puntoProgreso");
+
+
+        const barraProgreso =
+            document.getElementById("barraProgreso");
+
+
+        const tiempoTutorial =
+            document.getElementById("tiempoTutorial");
+
+
+
+        /* ================================================= */
+        /* CONTROLAR TUTORIAL                                  */
+        /* ================================================= */
+
+        function controlarTutorial() {
 
 
             /* ================================================= */
-            /* MOSTRAR RESULTADO EN CONSOLA                     */
+            /* SI ESTÁ REPRODUCIENDO → PAUSAR                     */
             /* ================================================= */
 
-            console.log("Salió:", numero);
+            if (
+                !audioTutorial.paused &&
+                !audioTutorial.ended
+            ) {
+
+                audioTutorial.pause();
+
+                botonTutorial.textContent =
+                    "PAUSA";
+
+                return;
+
+            }
+
+
+
+            /* ================================================= */
+            /* SI TERMINÓ → VOLVER AL PRINCIPIO                  */
+            /* ================================================= */
+
+            if (
+                audioTutorial.ended
+            ) {
+
+                audioTutorial.currentTime =
+                    0;
+
+            }
+
+
+
+            /* ================================================= */
+            /* REPRODUCIR                                         */
+            /* ================================================= */
+
+            audioTutorial.play();
+
+            botonTutorial.textContent =
+                "¿CÓMO JUGAR?";
 
         }
 
 
 
         /* ================================================= */
-        /* CARA INICIAL                                      */
+        /* ACTUALIZAR BARRA AUTOMÁTICAMENTE                     */
+        /* ================================================= */
+
+        audioTutorial.addEventListener(
+            "timeupdate",
+            function() {
+
+
+                actualizarBarra();
+
+
+                cambiarImagenSegunTiempo();
+
+            }
+        );
+
+
+
+        /* ================================================= */
+        /* ACTUALIZAR BARRA                                    */
+        /* ================================================= */
+
+        function actualizarBarra() {
+
+
+            if (
+                !isFinite(audioTutorial.duration) ||
+                audioTutorial.duration <= 0
+            ) {
+
+                return;
+
+            }
+
+
+
+            const porcentaje =
+
+                (
+                    audioTutorial.currentTime /
+                    audioTutorial.duration
+                ) * 100;
+
+
+
+            /* ================================================= */
+            /* BARRA                                                */
+            /* ================================================= */
+
+            progreso.style.width =
+                porcentaje + "%";
+
+
+
+            /* ================================================= */
+            /* PUNTO                                                */
+            /* ================================================= */
+
+            puntoProgreso.style.left =
+                porcentaje + "%";
+
+
+
+            /* ================================================= */
+            /* TIEMPO                                               */
+            /* ================================================= */
+
+            tiempoTutorial.textContent =
+
+                formatearTiempo(
+                    audioTutorial.currentTime
+                )
+                +
+                " / "
+                +
+                formatearTiempo(
+                    audioTutorial.duration
+                );
+
+        }
+
+
+
+        /* ================================================= */
+        /* MOVER AUDIO CON EL MOUSE O DEDO                     */
+        /* ================================================= */
+
+        let arrastrando =
+            false;
+
+
+
+        /* ================================================= */
+        /* INICIAR ARRASTRE                                    */
+        /* ================================================= */
+
+        puntoProgreso.addEventListener(
+            "pointerdown",
+            function(event) {
+
+                arrastrando =
+                    true;
+
+                puntoProgreso.setPointerCapture(
+                    event.pointerId
+                );
+
+                moverAudioDesdePunto(
+                    event
+                );
+
+            }
+        );
+
+
+
+        /* ================================================= */
+        /* ARRASTRAR                                           */
+        /* ================================================= */
+
+        puntoProgreso.addEventListener(
+            "pointermove",
+            function(event) {
+
+                if (
+                    !arrastrando
+                ) {
+
+                    return;
+
+                }
+
+
+                moverAudioDesdePunto(
+                    event
+                );
+
+            }
+        );
+
+
+
+        /* ================================================= */
+        /* TERMINAR ARRASTRE                                   */
+        /* ================================================= */
+
+        puntoProgreso.addEventListener(
+            "pointerup",
+            function(event) {
+
+                arrastrando =
+                    false;
+
+            }
+        );
+
+
+
+        puntoProgreso.addEventListener(
+            "pointercancel",
+            function() {
+
+                arrastrando =
+                    false;
+
+            }
+        );
+
+
+
+        /* ================================================= */
+        /* TAMBIÉN SE PUEDE TOCAR LA BARRA                     */
+        /* ================================================= */
+
+        barraProgreso.addEventListener(
+            "pointerdown",
+            function(event) {
+
+
+                if (
+                    event.target ===
+                    puntoProgreso
+                ) {
+
+                    return;
+
+                }
+
+
+                moverAudioDesdeBarra(
+                    event
+                );
+
+            }
+        );
+
+
+
+        /* ================================================= */
+        /* MOVER AUDIO DESDE EL PUNTO                           */
+        /* ================================================= */
+
+        function moverAudioDesdePunto(
+            event
+        ) {
+
+            const rect =
+                barraProgreso.getBoundingClientRect();
+
+
+            let posicion =
+                event.clientX -
+                rect.left;
+
+
+            posicion =
+                Math.max(
+                    0,
+                    Math.min(
+                        posicion,
+                        rect.width
+                    )
+                );
+
+
+            cambiarTiempoDesdePosicion(
+                posicion,
+                rect.width
+            );
+
+        }
+
+
+
+        /* ================================================= */
+        /* MOVER AUDIO DESDE LA BARRA                          */
+        /* ================================================= */
+
+        function moverAudioDesdeBarra(
+            event
+        ) {
+
+            const rect =
+                barraProgreso.getBoundingClientRect();
+
+
+            let posicion =
+                event.clientX -
+                rect.left;
+
+
+            posicion =
+                Math.max(
+                    0,
+                    Math.min(
+                        posicion,
+                        rect.width
+                    )
+                );
+
+
+            cambiarTiempoDesdePosicion(
+                posicion,
+                rect.width
+            );
+
+        }
+
+
+
+        /* ================================================= */
+        /* CAMBIAR EL TIEMPO DEL AUDIO                          */
+        /* ================================================= */
+
+        function cambiarTiempoDesdePosicion(
+            posicion,
+            ancho
+        ) {
+
+
+            if (
+                !isFinite(
+                    audioTutorial.duration
+                )
+            ) {
+
+                return;
+
+            }
+
+
+
+            const porcentaje =
+                posicion / ancho;
+
+
+
+            audioTutorial.currentTime =
+
+                porcentaje *
+                audioTutorial.duration;
+
+
+
+            actualizarBarra();
+
+            cambiarImagenSegunTiempo();
+
+        }
+
+
+
+        /* ================================================= */
+        /* CAMBIAR IMAGEN SEGÚN SEGUNDO                         */
+        /* ================================================= */
+
+        function cambiarImagenSegunTiempo() {
+
+
+            let imagenActual =
+                "portada.png";
+
+
+
+            for (
+                let i = 0;
+                i < pasosTutorial.length;
+                i++
+            ) {
+
+
+                if (
+                    audioTutorial.currentTime >=
+                    pasosTutorial[i].segundo
+                ) {
+
+                    imagenActual =
+                        pasosTutorial[i].imagen;
+
+                }
+
+            }
+
+
+
+            /* ================================================= */
+            /* CAMBIAR SOLAMENTE SI ES NECESARIO                   */
+            /* ================================================= */
+
+            if (
+                portada.getAttribute("src") !==
+                imagenActual
+            ) {
+
+
+                portada.style.opacity =
+                    "0";
+
+
+                setTimeout(
+                    function() {
+
+                        portada.src =
+                            imagenActual;
+
+                        portada.style.opacity =
+                            "1";
+
+                    },
+                    100
+                );
+
+            }
+
+        }
+
+
+
+        /* ================================================= */
+        /* CUANDO TERMINA EL AUDIO                             */
+        /* ================================================= */
+
+        audioTutorial.addEventListener(
+            "ended",
+            function() {
+
+
+                botonTutorial.textContent =
+                    "CÓMO JUGAR";
+
+
+                actualizarBarra();
+
+
+
+                /*
+                   NO OCULTAMOS LA BARRA.
+
+                   QUEDA VISIBLE EN 100%.
+                */
+
+
+
+                setTimeout(
+                    function() {
+
+                        portada.style.opacity =
+                            "0";
+
+
+                        setTimeout(
+                            function() {
+
+                                portada.src =
+                                    "portada.png";
+
+                                portada.style.opacity =
+                                    "1";
+
+                            },
+                            100
+                        );
+
+                    },
+                    500
+                );
+
+            }
+        );
+
+
+
+        /* ================================================= */
+        /* CUANDO SE CARGA EL AUDIO                            */
+        /* ================================================= */
+
+        audioTutorial.addEventListener(
+            "loadedmetadata",
+            function() {
+
+
+                tiempoTutorial.textContent =
+
+                    "0:00 / " +
+
+                    formatearTiempo(
+                        audioTutorial.duration
+                    );
+
+
+                actualizarBarra();
+
+            }
+        );
+
+
+
+        /* ================================================= */
+        /* FORMATEAR TIEMPO                                    */
+        /* ================================================= */
+
+        function formatearTiempo(
+            segundos
+        ) {
+
+
+            if (
+                !isFinite(segundos)
+            ) {
+
+                return "0:00";
+
+            }
+
+
+            segundos =
+                Math.floor(segundos);
+
+
+            const minutos =
+                Math.floor(
+                    segundos / 60
+                );
+
+
+            const segundosRestantes =
+                segundos % 60;
+
+
+            return (
+
+                minutos
+                +
+                ":"
+                +
+                segundosRestantes
+                    .toString()
+                    .padStart(
+                        2,
+                        "0"
+                    )
+
+            );
+
+        }
+
+
+
+        /* ================================================= */
+        /* FUNCIÓN TIRAR DADO                                  */
+        /* ================================================= */
+
+        function tirarDado() {
+
+
+            const dado =
+                document.getElementById("dado");
+
+
+
+            /* ================================================= */
+            /* SONIDO                                              */
+            /* ================================================= */
+
+            sonidoDado.currentTime =
+                0;
+
+            sonidoDado.play();
+
+
+
+            /* ================================================= */
+            /* EFECTO AMARILLO                                    */
+            /* ================================================= */
+
+            dado.classList.add(
+                "presionado"
+            );
+
+
+            setTimeout(
+                function() {
+
+                    dado.classList.remove(
+                        "presionado"
+                    );
+
+                },
+                50
+            );
+
+
+
+            /* ================================================= */
+            /* NÚMERO ALEATORIO                                    */
+            /* ================================================= */
+
+            const numero =
+
+                Math.floor(
+                    Math.random() * 6
+                ) + 1;
+
+
+
+            /* ================================================= */
+            /* ANIMACIÓN                                           */
+            /* ================================================= */
+
+            dado.classList.remove(
+                "tirando"
+            );
+
+
+            void dado.offsetWidth;
+
+
+            dado.classList.add(
+                "tirando"
+            );
+
+
+
+            /* ================================================= */
+            /* OCULTAR PUNTOS                                      */
+            /* ================================================= */
+
+            document
+                .querySelectorAll(".punto")
+                .forEach(
+                    punto => {
+
+                        punto.style.display =
+                            "none";
+
+                    }
+                );
+
+
+
+            /* ================================================= */
+            /* CARAS                                                */
+            /* ================================================= */
+
+            const caras = {
+
+
+                1: [
+                    "p5"
+                ],
+
+
+                2: [
+                    "p1",
+                    "p9"
+                ],
+
+
+                3: [
+                    "p1",
+                    "p5",
+                    "p9"
+                ],
+
+
+                4: [
+                    "p1",
+                    "p3",
+                    "p7",
+                    "p9"
+                ],
+
+
+                5: [
+                    "p1",
+                    "p3",
+                    "p5",
+                    "p7",
+                    "p9"
+                ],
+
+
+                6: [
+                    "p1",
+                    "p3",
+                    "p4",
+                    "p6",
+                    "p7",
+                    "p9"
+                ]
+
+            };
+
+
+
+            /* ================================================= */
+            /* MOSTRAR PUNTOS                                      */
+            /* ================================================= */
+
+            caras[numero].forEach(
+                id => {
+
+                    document
+                        .getElementById(id)
+                        .style.display =
+                        "block";
+
+                }
+            );
+
+
+
+            console.log(
+                "Salió:",
+                numero
+            );
+
+        }
+
+
+
+        /* ================================================= */
+        /* CARA INICIAL                                         */
         /* ================================================= */
 
         document
             .getElementById("p5")
-            .style.display = "block";
+            .style.display =
+            "block";
 
 
     </script>
 
 
 </body>
+
 </html>
-```
