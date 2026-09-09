@@ -227,7 +227,7 @@
 
         .contenedor-tutorial {
 
-            width: 100%;
+             width: auto;
 
             text-align: center;
 
@@ -299,6 +299,152 @@
 
             transform:
                 scale(.96);
+
+        }
+
+
+
+        /* ================================================= */
+        /* BOTONES DE IMAGEN LATERALES                         */
+        /* ================================================= */
+
+        .contenedor-botones-tutorial {
+
+            width: 100%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 10px;
+
+            margin-top: 0px;
+
+            margin-bottom: 10px;
+
+        }
+
+        .boton-imagen-lateral {
+
+            border: none;
+
+            background: transparent;
+
+            padding: 0;
+
+            margin: 0;
+
+            cursor: pointer;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            flex: 0 0 auto;
+
+        }
+
+        .imagen-boton-lateral {
+
+            width: 50px;
+
+            height: 45px;
+
+            object-fit: contain;
+
+            display: block;
+
+            transition: transform .15s ease;
+
+        }
+
+        .boton-imagen-lateral:hover .imagen-boton-lateral {
+
+            transform: scale(1.20);
+
+        }
+
+        .boton-imagen-lateral:active .imagen-boton-lateral {
+
+            transform: scale(1);
+
+        }
+
+        /* ================================================= */
+        /* VENTANA DE IMAGEN AGRANDADA                        */
+        /* ================================================= */
+
+        .visor-imagen {
+
+            display: none;
+
+            position: fixed;
+
+            z-index: 1000;
+
+            left: 0;
+
+            top: 0;
+
+            width: 100%;
+
+            height: 100%;
+
+            background: rgba(0,0,0,.75);
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+
+            box-sizing: border-box;
+
+            cursor: pointer;
+
+        }
+
+        .visor-imagen img {
+
+            max-width: 95%;
+
+            max-height: 90%;
+
+            width: auto;
+
+            height: auto;
+
+            object-fit: contain;
+
+            border-radius: 10px;
+
+            cursor: default;
+
+        }
+
+        .cerrar-visor {
+
+            position: absolute;
+
+            top: 15px;
+
+            right: 20px;
+
+            color: #ffffff;
+
+            font-size: 38px;
+
+            font-weight: bold;
+
+            line-height: 1;
+
+            cursor: pointer;
+
+            user-select: none;
 
         }
 
@@ -790,7 +936,7 @@
 
             text-align: center;
 
-            margin-top: 80px;
+            margin-top: 120px;
 
             margin-bottom: 20px;
 
@@ -871,14 +1017,45 @@
         <!-- BOTÓN CÓMO JUGAR                                   -->
         <!-- ================================================= -->
 
-        <div class="contenedor-tutorial">
+        <div class="contenedor-botones-tutorial">
 
+            <!-- BOTÓN IZQUIERDO: ABRE UNA IMAGEN AGRANDADA -->
             <button
-                id="botonTutorial"
-                class="boton-tutorial"
-                onclick="controlarTutorial()"
+                class="boton-imagen-lateral"
+                onclick="abrirImagenGrande()"
+                aria-label="Ver imagen"
             >
-                ¿CÓMO JUGAR?
+                <img
+                    class="imagen-boton-lateral"
+                    src="boton-ojo.png"
+                    alt="Ver imagen"
+                >
+            </button>
+
+            <!-- BOTÓN ORIGINAL: CÓMO JUGAR -->
+            <div class="contenedor-tutorial">
+
+                <button
+                    id="botonTutorial"
+                    class="boton-tutorial"
+                    onclick="controlarTutorial()"
+                >
+                    ¿CÓMO JUGAR?
+                </button>
+
+            </div>
+
+            <!-- BOTÓN DERECHO: DESCARGA EL PDF -->
+            <button
+                class="boton-imagen-lateral"
+                onclick="descargarPDF()"
+                aria-label="Descargar PDF"
+            >
+                <img
+                    class="imagen-boton-lateral"
+                    src="boton-flecha.png"
+                    alt="Descargar PDF"
+                >
             </button>
 
         </div>
@@ -1022,10 +1199,76 @@
 
 
     <!-- ================================================= -->
+    <!-- VISOR DE IMAGEN AGRANDADA                           -->
+    <!-- ================================================= -->
+
+    <div
+        id="visorImagen"
+        class="visor-imagen"
+        onclick="cerrarImagenGrande(event)"
+    >
+
+        <span
+            class="cerrar-visor"
+            onclick="cerrarImagenGrande(event)"
+        >
+            &times;
+        </span>
+
+        <img
+            id="imagenGrande"
+            src="imagen-grande.jpg"
+            alt="Imagen ampliada"
+        >
+
+    </div>
+
+
+
+    <!-- ================================================= -->
     <!-- JAVASCRIPT                                         -->
     <!-- ================================================= -->
 
     <script>
+
+
+        /* ================================================= */
+        /* BOTÓN IZQUIERDO: IMAGEN AGRANDADA                  */
+        /* ================================================= */
+
+        function abrirImagenGrande() {
+
+            document.getElementById("visorImagen").style.display =
+                "flex";
+
+        }
+
+
+        function cerrarImagenGrande(event) {
+
+            if (
+                event.target.id === "visorImagen" ||
+                event.target.classList.contains("cerrar-visor")
+            ) {
+
+                document.getElementById("visorImagen").style.display =
+                    "none";
+
+            }
+
+        }
+
+
+        /* ================================================= */
+        /* BOTÓN DERECHO: DESCARGAR PDF                       */
+        /* ================================================= */
+
+function descargarPDF() {
+
+    window.open("DINO_ESCAPE_ReadMind.pdf", "_blank");
+
+}
+
 
 
         /* ================================================= */
