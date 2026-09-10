@@ -1307,30 +1307,37 @@ function descargarPDF() {
         const pasosTutorial = [
 
             {
-                segundo: 15,
-                imagen: "tutorial-1.png"
+                segundo: 13,
+                imagen: "tuto1.png"
             },
 
             {
-                segundo: 30,
-                imagen: "tutorial-2.png"
-            },
-
-            {
-                segundo: 45,
-                imagen: "tutorial-3.png"
+                segundo: 34,
+                imagen: "tuto2.png"
             },
 
             {
                 segundo: 50,
-                imagen: "tutorial-4.png"
+                imagen: "tuto3.png"
             },
 
             {
-                segundo: 60,
-                imagen: "tutorial-5.png"
-            }
+                segundo: 82,
+                imagen: "tuto4.png"
+            },
 
+            {
+                segundo: 103,
+                imagen: "tuto5.png"
+            },
+            {
+                segundo: 117,
+                imagen: "tuto1.png"
+            },
+            {
+                segundo: 157,
+                imagen: "portada.png"
+            }
         ];
 
 
@@ -1400,7 +1407,7 @@ function descargarPDF() {
             ) {
 
                 audioTutorial.currentTime =
-                    0;
+                    100;
 
             }
 
@@ -1413,7 +1420,7 @@ function descargarPDF() {
             audioTutorial.play();
 
             botonTutorial.textContent =
-                "¿CÓMO JUGAR?";
+                "REPRODUCIENDO";
 
         }
 
@@ -1774,9 +1781,9 @@ function descargarPDF() {
                 imagenActual
             ) {
 
-
+            /* se puede impletentar un pestaneo por cada pase de imagen colocando 0  */
                 portada.style.opacity =
-                    "0";
+                    "100";
 
 
                 setTimeout(
